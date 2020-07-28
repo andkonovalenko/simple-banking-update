@@ -1,0 +1,82 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet id="1.0.0" author="And">
+        <createTable tableName="bank_account">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="balance" type="float">
+                <constraints nullable="false"/>
+            </column>
+            <column name="currency_type" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_of_creation" type="timestamp without time zone">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bank_user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1.0.1" author="And">
+        <createTable tableName="bank_user">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="e_mail" type="varchar(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_status" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1.0.2" author="And">
+        <createTable tableName="operation">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="money_amount" type="float">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="timestamp without time zone">
+                <constraints nullable="false"/>
+            </column>
+            <column name="operation_type" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bank_account_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1.0.3" author="And">
+        <createTable tableName="user_role">
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_roles" type="varchar(20)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1.0.4" author="And">
+        <addForeignKeyConstraint baseTableName="bank_account" baseColumnNames="bank_user_id" constraintName="bank_user_id_fk" referencedTableName="bank_user"
+                                 referencedColumnNames="id" onDelete="CASCADE" onUpdate="CASCADE"/>
+    </changeSet>
+    <changeSet id="1.0.5" author="And">
+        <addForeignKeyConstraint baseTableName="operation" baseColumnNames="bank_account_id" constraintName="bank_account_id_fk" referencedTableName="bank_account"
+                                 referencedColumnNames="id" onUpdate="CASCADE" onDelete="CASCADE"/>
+    </changeSet>
+    <changeSet id="1.0.6" author="And">
+        <addForeignKeyConstraint baseTableName="user_role" baseColumnNames="user_id" constraintName="user_id_fk" referencedTableName="bank_user"
+                                 referencedColumnNames="id" onDelete="CASCADE" onUpdate="CASCADE"/>
+    </changeSet>
+</databaseChangeLog>
